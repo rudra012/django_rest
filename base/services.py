@@ -5,6 +5,7 @@ import logging
 import random
 import sys
 
+import jwt
 from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model
 from django.core.mail import EmailMultiAlternatives
@@ -13,7 +14,6 @@ from django.template import RequestContext, TemplateDoesNotExist
 from django.template.loader import render_to_string
 from django.utils import six
 from django.utils.translation import ugettext_lazy as _
-from rest_framework.authtoken.models import Token
 
 from base import exceptions as exc
 
@@ -24,36 +24,39 @@ log = logging.getLogger(__name__)
 # current_site = get_current()
 
 
-def get_token_for_user(user):
+def get_token_for_user(user, scope):
     """
     Generate a new signed token containing
     a specified user limited for a scope (identified as a string).
     """
-    return str(Token.objects.get_or_create(user=user)[0])
+    data = {
+        "user_%s_id" % (scope): str(user.id),
+    }
+    return jwt.encode(data, settings.SECRET_KEY).decode('utf-8')
 
 
-# def get_user_for_token(token, scope):
-#     """
-#     Given a self-contained token and a scope try to parse and
-#     unsign it.
-#
-#     If max_age is specified it checks token expiration.
-#
-#     If token passes a validation, returns
-#     a user instance corresponding with user_id stored
-#     in the incoming token.
-#     """
-#     try:
-#         data = jwt.decode(token, settings.SECRET_KEY)
-#     except jwt.DecodeError:
-#         raise exc.NotAuthenticated("Invalid request. Please retry.")
-#
-#     try:
-#         user = user_model.objects.get(pk=data["user_%s_id" % (scope)])
-#     except (user_model.DoesNotExist, KeyError):
-#         raise exc.NotAuthenticated("Invalid request. Please retry.")
-#     else:
-#         return user
+def get_user_for_token(token, scope):
+    """
+    Given a self-contained token and a scope try to parse and
+    unsign it.
+
+    If max_age is specified it checks token expiration.
+
+    If token passes a validation, returns
+    a user instance corresponding with user_id stored
+    in the incoming token.
+    """
+    try:
+        data = jwt.decode(token, settings.SECRET_KEY)
+    except jwt.DecodeError:
+        raise exc.NotAuthenticated("Invalid request. Please retry.")
+
+    try:
+        user = user_model.objects.get(pk=data["user_%s_id" % (scope)])
+    except (user_model.DoesNotExist, KeyError):
+        raise exc.NotAuthenticated("Invalid request. Please retry.")
+    else:
+        return user
 
 
 def get_authenticated_active_user(username_or_email=None, password=None):

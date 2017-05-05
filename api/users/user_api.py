@@ -9,7 +9,13 @@ from . import serializers
 
 class AuthViewSet(GenericViewSet):
     permission_classes = (AllowAny,)
-    serializer_class = serializers.UserRegisterSerializer
+
+    def get_serializer_class(self):
+        print(self.action)
+        serializer_class = serializers.UserRegisterSerializer
+        if self.action == 'register':
+            serializer_class = serializers.UserRegisterSerializer
+        return serializer_class
 
     @list_route(methods=['POST'])
     def register(self, request):

@@ -29,7 +29,7 @@ class UserTokenSerializer(serializers.ModelSerializer):
         read_only_fields = ('email', 'auth_token')
 
     def get_auth_token(self, user_obj):
-        return services.get_token_for_user(user_obj)
+        return services.get_token_for_user(user_obj, "authentication")
 
 
 class UserSerializer(serializers.ModelSerializer):
