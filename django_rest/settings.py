@@ -42,8 +42,14 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
 
+    # For Rest API
     # http://www.django-rest-framework.org/
     'rest_framework',
+
+    # For rest documentations
+    # https://github.com/marcgibbons/django-rest-swagger
+    'rest_framework_swagger',
+
 ]
 AUTH_USER_MODEL = 'users.User'
 
