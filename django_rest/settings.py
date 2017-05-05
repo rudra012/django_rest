@@ -47,10 +47,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
 
-    # For rest documentations
+    # -----------------For rest documentations-------------------
     # https://github.com/marcgibbons/django-rest-swagger
     'rest_framework_swagger',
-
+    # https://github.com/manosim/django-rest-framework-docs
+    'rest_framework_docs',
+    # -----------------For rest documentations-------------------
 ]
 AUTH_USER_MODEL = 'users.User'
 

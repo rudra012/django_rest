@@ -32,5 +32,7 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += [
         # Swagger Doc
-        url(r'^doc_swagger$', schema_view)
+        url(r'^doc_swagger$', schema_view),
+        url(r'^docs_drf/', include('rest_framework_docs.urls')),
+
     ]

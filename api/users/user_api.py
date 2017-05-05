@@ -50,4 +50,5 @@ class CurrentUserViewSet(viewsets.ViewSet):
     #
     # GET /me
     def list(self, *args, **kwargs):
+        print("Fsdfs")
         return response.Ok(serializers.UserSerializer(self.request.user, context={'request': self.request}).data)
