@@ -15,6 +15,8 @@ class AuthViewSet(GenericViewSet):
         serializer_class = serializers.UserRegisterSerializer
         if self.action == 'register':
             serializer_class = serializers.UserRegisterSerializer
+        if self.action == 'login':
+            serializer_class = serializers.UserLoginSerializer
         return serializer_class
 
     @list_route(methods=['POST'])
@@ -22,6 +24,15 @@ class AuthViewSet(GenericViewSet):
         serializer = serializers.UserRegisterSerializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+        if user.is_active:
+            return response.Created(serializers.UserTokenSerializer(user, context={'request': request}).data)
+        return response.Created({"success": "Account successfully created."})
+
+    @list_route(methods=['POST'])
+    def login(self, request):
+        serializer = serializers.UserLoginSerializer(data=self.request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data.get("user")
         if user.is_active:
             return response.Created(serializers.UserTokenSerializer(user, context={'request': request}).data)
         return response.Created({"success": "Account successfully created."})

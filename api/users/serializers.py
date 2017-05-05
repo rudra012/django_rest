@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-
+from django.contrib.auth import authenticate
 from base import services
 from users.models import User
 
@@ -37,3 +37,22 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'email', 'username', 'first_name', 'last_name')
         read_only_fields = ('id', 'email')
+
+
+class UserLoginSerializer(serializers.Serializer):
+    email = serializers.CharField(required=True)
+    password = serializers.CharField(required=True)
+
+    class Meta:
+        fields = ('email', 'password')
+
+    def validate(self, attrs):
+        print(attrs)
+        # print(attrs.get("email"))
+        # print(attrs.get("password"))
+
+        user = authenticate(username=attrs.get("email"), password=attrs.get("password"))
+        if not user:
+            raise serializers.ValidationError('Email or password incorrect!')
+        attrs["user"] = user
+        return attrs

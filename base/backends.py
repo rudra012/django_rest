@@ -18,8 +18,8 @@ class TokenAuthentication(BaseAuthentication):
     auth_rx = re.compile(r"^Token (.+)$")
 
     def authenticate(self, request):
-        print(self.auth_rx)
-        pprint(request.META)
+        # print(self.auth_rx)
+        # pprint(request.META)
         if "HTTP_AUTHORIZATION" not in request.META:
             return None
 
@@ -29,7 +29,7 @@ class TokenAuthentication(BaseAuthentication):
             return None
 
         token = token_rx_match.group(1)
-        print(token)
+        # print(token)
         user = services.get_user_for_token(token, "authentication")
-        print(user)
+        # print(user)
         return (user, token)
