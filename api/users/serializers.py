@@ -59,3 +59,10 @@ class UserTokenSerializer(serializers.ModelSerializer):
 
         # def get_auth_token(self, obj):
         #     return services.get_token_for_user(obj, "authentication")
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'username', 'first_name', 'last_name')
+        read_only_fields = ('id', 'email')

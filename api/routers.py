@@ -12,7 +12,8 @@ For base name use:
 
 from rest_framework import routers
 
-from api.users.user_api import AuthViewSet
+from api.users import user_api
 
 router = routers.DefaultRouter(trailing_slash=False)
-router.register(r'auth', AuthViewSet, base_name='auth')
+router.register(r'auth', user_api.AuthViewSet, base_name='auth')
+router.register(r'me', user_api.CurrentUserViewSet, base_name='me')
