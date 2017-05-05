@@ -1,13 +1,15 @@
 from rest_framework import viewsets
 from rest_framework.decorators import list_route
 from rest_framework.permissions import AllowAny
+from rest_framework.viewsets import GenericViewSet
 
 from base import response
 from . import serializers
 
 
-class AuthViewSet(viewsets.ViewSet):
+class AuthViewSet(GenericViewSet):
     permission_classes = (AllowAny,)
+    serializer_class = serializers.UserRegisterSerializer
 
     @list_route(methods=['POST'])
     def register(self, request):

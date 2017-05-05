@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     # For Rest API
     # http://www.django-rest-framework.org/
     'rest_framework',
+    'rest_framework.authtoken',
 
     # For rest documentations
     # https://github.com/marcgibbons/django-rest-swagger

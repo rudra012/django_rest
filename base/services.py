@@ -13,6 +13,7 @@ from django.template import RequestContext, TemplateDoesNotExist
 from django.template.loader import render_to_string
 from django.utils import six
 from django.utils.translation import ugettext_lazy as _
+from rest_framework.authtoken.models import Token
 
 from base import exceptions as exc
 
@@ -23,16 +24,12 @@ log = logging.getLogger(__name__)
 # current_site = get_current()
 
 
-
-def get_token_for_user(user, scope):
+def get_token_for_user(user):
     """
     Generate a new signed token containing
     a specified user limited for a scope (identified as a string).
     """
-    data = {
-        "user_%s_id" % (scope): str(user.id),
-    }
-    return jwt.encode(data, settings.SECRET_KEY).decode('utf-8')
+    return str(Token.objects.get_or_create(user=user)[0])
 
 
 # def get_user_for_token(token, scope):
