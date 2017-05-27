@@ -72,7 +72,7 @@ ROOT_URLCONF = 'django_rest.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -142,6 +142,7 @@ ALLOWED_HOSTS = ['*']
 
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = [
@@ -167,3 +168,5 @@ REST_FRAMEWORK = {
 }
 
 ACCOUNT_ACTIVATION_DAYS = 7
+
+

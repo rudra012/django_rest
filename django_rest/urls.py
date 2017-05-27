@@ -15,18 +15,23 @@ Including another URLconf
 """
 from django.conf import settings
 from django.conf.urls import url, include
+from django.conf.urls.static import static
 from django.contrib import admin
 from rest_framework_swagger.views import get_swagger_view
 
 from api.routers import router
 
-schema_view = get_swagger_view(title='Pastebin API')
+schema_view = get_swagger_view(title='Rudra API')
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    # Admin
+    url(r'^manager/', admin.site.urls),
+
     # Rest API
     url(r'^api/', include(router.urls)),
 
+    # Home
+    url(r'', include('website.urls')),
 ]
 
 if settings.DEBUG:
@@ -36,3 +41,5 @@ if settings.DEBUG:
         url(r'^docs_drf/', include('rest_framework_docs.urls')),
 
     ]
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
