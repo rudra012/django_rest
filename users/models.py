@@ -1,3 +1,6 @@
+import datetime
+
+from django.conf import settings
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core import validators
@@ -5,7 +8,8 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
-from base.models import UUIDModel
+from base.model_choices import DEVICE_TYPE
+from base.models import UUIDModel, TimeStampedUUIDModel
 
 
 class UserManager(BaseUserManager):
@@ -58,6 +62,10 @@ class User(AbstractBaseUser, UUIDModel, PermissionsMixin):
                                               'active. Unselect this instead of deleting accounts.')
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
 
+    # For notification on mobile phone
+    device_type = models.CharField(max_length=1, choices=DEVICE_TYPE, null=True, blank=True)
+    device_id = models.CharField(max_length=255, null=True, blank=True)
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
     objects = UserManager()
@@ -83,3 +91,38 @@ class User(AbstractBaseUser, UUIDModel, PermissionsMixin):
 
     def clean(self):
         self.username = self.username.lower()
+
+
+class UserActivationKey(TimeStampedUUIDModel):
+    """
+    A simple profile which stores an activation key for use during
+    user account registration.
+    """
+    user = models.OneToOneField(User, verbose_name='user')
+    activation_key = models.CharField('activation key', max_length=40)
+    activated = models.BooleanField(default=False)
+
+    def __str__(self):
+        return "{} -> {}".format(self.user, self.activation_key)
+
+    def activation_key_expired(self):
+        """
+        Determine whether this ``RegistrationProfile``'s activation
+        key has expired, returning a boolean -- ``True`` if the key
+        has expired.
+        Key expiration is determined by a two-step process:
+        1. If the user has already activated, ``self.activated`` will
+           be ``True``. Re-activating is not permitted, and so this
+           method returns ``True`` in this case.
+        2. Otherwise, the date the user signed up is incremented by
+           the number of days specified in the setting
+           ``ACCOUNT_ACTIVATION_DAYS`` (which should be the number of
+           days after signup during which a user is allowed to
+           activate their account); if the result is less than or
+           equal to the current date, the key has expired and this
+           method returns ``True``.
+        """
+        expiration_date = datetime.timedelta(
+            days=settings.ACCOUNT_ACTIVATION_DAYS)
+        return (self.activated or
+                (self.modified + expiration_date <= timezone.now()))
