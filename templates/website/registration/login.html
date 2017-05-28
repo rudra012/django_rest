@@ -4,14 +4,11 @@
 
 {% block body_content %}
 
-
-<form method="post" action=".">
+<h2>Login</h2>
+<form method="post">
     {% csrf_token %}
-    <table border="0">
-        {{ form.as_table }}
-    </table>
-    <input type="submit" value="Register"/>
+    {{ form.as_p }}
+    <button type="submit">Login</button>
 </form>
-<a href="/">Login</a>
 
 {% endblock body_content %}

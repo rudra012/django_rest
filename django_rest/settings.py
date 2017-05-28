@@ -97,11 +97,23 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         default=os.environ.get('DATABASE_URL')
-#     )
-# }
+DATABASES = {
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL')
+    )
+}
+
+DATABASES = {
+    'default': {
+    "ENGINE": "django.db.backends.mysql",
+    "NAME": "django_rest",
+    "HOST": "localhost",
+    "PORT": "3306",
+    "USER": "root",
+    "PASSWORD": "root"
+  }
+}
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -170,3 +182,4 @@ REST_FRAMEWORK = {
 ACCOUNT_ACTIVATION_DAYS = 7
 
 
+LOGIN_REDIRECT_URL = 'home'

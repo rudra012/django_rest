@@ -13,7 +13,7 @@ class AuthViewSet(GenericViewSet):
     def get_serializer_class(self):
         print(self.action)
         serializer_class = serializers.UserRegisterSerializer
-        if self.action == 'register':
+        if self.action == 'registration':
             serializer_class = serializers.UserRegisterSerializer
         if self.action == 'login':
             serializer_class = serializers.UserLoginSerializer
