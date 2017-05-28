@@ -7,6 +7,23 @@
     </title>
 
     {% include 'website/base_site/base_head_import.html' %}
+    <style type="text/css">
+    body {
+      width: 500px;
+      margin: 0 auto;
+    }
+    .infinite-item, .loading {
+      margin-bottom: 5px;
+      background-color: #1eaedb;
+      color: #fff;
+      text-align: center;
+      padding: 25px 0;
+    }
+    .loading {
+      background-color: #333;
+    }
+
+    </style>
     {% block extrastyle %}
     {% endblock %}
 

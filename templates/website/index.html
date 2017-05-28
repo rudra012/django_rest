@@ -5,37 +5,19 @@
 {% block body_content %}
 <div class="infinite-container">
     {% for number in numbers %}
-    <div class="infinite-item">{{ number }}</div>
+      <div class="infinite-item">{{ number }}</div>
     {% endfor %}
-</div>
-<div class="pagination-table">
-<span class="current">
-Page {{ numbers.number }} of {{ numbers.paginator.num_pages }}
-</span>
+  </div>
 
-    <div class="pagination pagination-sm no-margin pull-right">
-        <span class="step-links">
-            {% if numbers.has_previous %}
-                <a class="btn btn-primary"
-                   href="?page={{ numbers.previous_page_number }}&q={{request.GET.q}}">
-                    <span class="fa fa-backward"> << </span>
-                </a>
-            {% endif %}
-    
-            {% if numbers.has_next %}
-                <a class="btn btn-primary"
-                   href="?page={{ numbers.next_page_number }}&q={{request.GET.q}}">
-                    <span class="fa fa-forward"> >> </span>
-                </a>
-            {% endif %}
-        </span>
-    </div>
-</div>
-<div class="loading" style="display: none;">
+  {% if numbers.has_next %}
+    <a class="infinite-more-link" href="?page={{ numbers.next_page_number }}">More</a>
+  {% endif %}
+
+  <div class="loading" style="display: none;">
     Loading...
-</div>
+  </div>
 
-<script>
+  <script>
     var infinite = new Waypoint.Infinite({
       element: $('.infinite-container')[0],
       onBeforePageLoad: function () {
@@ -45,8 +27,5 @@ Page {{ numbers.number }} of {{ numbers.paginator.num_pages }}
         $('.loading').hide();
       }
     });
-
-
-
-</script>
+  </script>
 {% endblock body_content %}
