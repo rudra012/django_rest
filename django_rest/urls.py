@@ -25,13 +25,14 @@ schema_view = get_swagger_view(title='Rudra API')
 
 urlpatterns = [
     # Admin
-    url(r'^manager/', admin.site.urls),
+    url(r'^admin/', admin.site.urls),
 
     # Rest API
     url(r'^api/', include(router.urls)),
 
     # Home
     url(r'', include('website.urls')),
+    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 ]
 
 if settings.DEBUG:

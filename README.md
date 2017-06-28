@@ -55,3 +55,6 @@ Just update `runtime.txt` to `python-2.7.13` (no trailing spaces or newlines!).
 Now DB settings is added to environ file and details are provided using 
 heroku config variables in setting tab.
 
+
+- New app snippet is created from REST Tutorials
+

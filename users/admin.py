@@ -11,3 +11,4 @@ class UserAdmin(AuthUserAdmin):
     list_filter = ('is_superuser', 'is_active')
     search_fields = ('first_name', 'last_name', 'email', 'username')
     ordering = ('email',)
+    actions_on_bottom = True

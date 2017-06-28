@@ -34,7 +34,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.admindocs',
     'users',
+    'snippets.apps.SnippetsConfig',
 
     # Disable Django's own staticfiles handling in favour of WhiteNoise, for
     # greater consistency between gunicorn and `./manage.py runserver`. See:
@@ -65,6 +67,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.admindocs.middleware.XViewMiddleware',
 ]
 
 ROOT_URLCONF = 'django_rest.urls'
@@ -105,13 +108,13 @@ DATABASES = {
 
 DATABASES = {
     'default': {
-    "ENGINE": "django.db.backends.mysql",
-    "NAME": "django_rest",
-    "HOST": "localhost",
-    "PORT": "3306",
-    "USER": "root",
-    "PASSWORD": "root"
-  }
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "django_rest",
+        "HOST": "localhost",
+        "PORT": "3306",
+        "USER": "root",
+        "PASSWORD": "root"
+    }
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -180,6 +183,5 @@ REST_FRAMEWORK = {
 }
 
 ACCOUNT_ACTIVATION_DAYS = 7
-
 
 LOGIN_REDIRECT_URL = 'home'
